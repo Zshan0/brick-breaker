@@ -20,11 +20,14 @@ class Screen:
     WIDTH, HEIGHT = (240, 60)
 
     def __init__(self):
-        system("clear")
+        # system("clear")
         rows, columns = popen('stty size', 'r').read().split()
         rows, columns = int(rows), int(columns)
         if (self.WIDTH <= columns) and (self.HEIGHT <= rows):
-            self.screen_string = np.zeros((self.HEIGHT, self.WIDTH), dtype=int)
+            self.screen_string = np.zeros(
+                (self.HEIGHT, self.WIDTH), dtype='<U20')
+            self.screen_string.fill('\u001b[40m \u001b[0m')
+
         else:
             print("Terminal size needs to be atleast \
                     150 x 50 (columns x rows)")
@@ -43,9 +46,9 @@ class Screen:
         return ''.join(ar)
 
     def print_screen(self):
-        output = np.vectorize(self.map_screen)
+        # output = np.vectorize(self.map_screen)
         np.savetxt(sys.stdout.buffer,
-                   output(self.screen_string),
+                   self.screen_string,
                    fmt='%s',
                    delimiter='',
                    newline='\n')
@@ -56,11 +59,11 @@ class Object:
 
     def __init__(self, screen, x, y):
         self.position = {"x": x, "y": y}
-        self.value = 1
+        self.value = ('\u001b[41mA\u001b[0m')
         screen.screen_string[y][x] = self.value
 
     def update_position(self, screen, x, y):
-        screen.screen_string[self.position["y"]][self.position["x"]] = 0
+        screen.screen_string[self.position["y"]][self.position["x"]] = ' '
         screen.screen_string[y][x] = self.value
         self.position = {"x": x, "y": y}
         # print(x, y)
@@ -71,9 +74,8 @@ balls = []
 for i in range(screen.HEIGHT):
     x = random.randint(0, screen.WIDTH - 1)
     balls.append(Object(screen, x, i))
-# ite = 0
-# screen.print_screen()
-# time.sleep(10)
+ite = 0
+screen.print_screen()
 while True:
     for i in range(screen.HEIGHT):
         balls[i].update_position(
