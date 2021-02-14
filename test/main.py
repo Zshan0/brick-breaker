@@ -24,7 +24,7 @@ class Screen:
         rows, columns = popen('stty size', 'r').read().split()
         rows, columns = int(rows), int(columns)
         if (self.WIDTH <= columns) and (self.HEIGHT <= rows):
-            self.screen_string = np.zeros((self.HEIGHT, self.WIDTH), dtype=int)
+            self.screen_string = np.zeros((self.HEIGHT, self.WIDTH), dtype='')
         else:
             print("Terminal size needs to be atleast \
                     150 x 50 (columns x rows)")

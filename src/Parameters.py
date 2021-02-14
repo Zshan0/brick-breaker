@@ -24,7 +24,7 @@ RESET = '\u001b[0m'
 '''
 WIDTH, HEIGHT = (240, 60)
 MENU = {
-    "dimensions": (60, 60),
+    "dimensions": (59, 59),
     "origin": (0, 0),
     "background_color": '\u001b[40;1m',
     "text_color": '\u001b[40m\u001b[37;1m',
@@ -39,22 +39,49 @@ MENU = {
 }
 
 TOP = {
-    "dimensions": (180, 4),
+    "dimensions": (179, 4),
     "origin": (60, 0),
     "background_color": '\u001b[40;1m',
     "text_color": '\u001b[40m\u001b[31;1m',
     "heart_icon": 'LIVES',
-    "heart_pos": (61, 2),
+    "heart_pos": (1, 2),
     "heart_color": '\u001b[31;1m',
     "time_icon": 'TIME',
     "time_color": '\u001b[37;1m',
-    "time_pos": (180, 2)
+    "time_pos": (170, 2)
 
 }
 
 GAME = {
-    "width": 180,
-    "height": 56,
-    "x": 60,
-    "y": 4
+    "dimensions": (179, 55),
+    "origin": (60, 4),
+    "background_color": "\u001b[40;1m",
+    "brick_colors": ["\u001b[42;1m", "\u001b[43;1m", "\u001b[41m"],
+}
+
+
+''' Consists of list of pair of coordinates which decide from what point
+    to what point the border is supposed to stretch. The border only
+    exists outside the game. The border on the bottom and the right side
+    of the screen will be done by placing the objects as barriers.'''
+BORDER = {
+    "dimensions": [
+        [(0, 0), (0, 59)],
+        [(0, 0), (239, 0)],
+        [(59, 0), (59, 59)],
+        [(59, 3), (239, 3)],
+        [(239, 0), (239, 5)],
+        [(0, 59), (59, 59)]],
+    "color": "\u001b[47m"
+}
+
+''' Objects: contains the dictionary that defines the object
+    contains: color, width, height, velocity'''
+
+PADDLE = {
+    "name": "paddle",
+    "color": "\u001b[47m",
+    "dimensions": (8, 0),
+    "velocity": (2, 0),
+    "position": (90, 30)
 }
