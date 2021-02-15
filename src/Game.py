@@ -15,6 +15,9 @@ class Game:
         self.background_color = GAME["background_color"]
         self.brick_colors = GAME["brick_colors"]
 
+    def set_player(self, player):
+        self.player = player
+
     def test_output(self):
         ''' To quickly check if the colors fit the palette'''
         print(GAME["background_color"] + "background_color" + RESET)

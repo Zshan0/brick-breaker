@@ -37,7 +37,7 @@ class Screen:
                    fmt='%s',
                    delimiter='',
                    newline='\n')
-        time.sleep(0.01)
+        time.sleep(DELAY)
 
     def fill_screen(self, start_pos, end_pos, color):
         ''' Given are the top left and the bottom right corner of the

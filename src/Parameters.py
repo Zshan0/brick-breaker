@@ -81,7 +81,18 @@ BORDER = {
 PADDLE = {
     "name": "paddle",
     "color": "\u001b[47m",
-    "dimensions": (8, 0),
+    "dimensions": (12, 0),
     "velocity": (2, 0),
-    "position": (90, 30)
+    "position": (90, 50)
 }
+
+BALL = {
+    "name": "ball",
+    "color": "\u001b[47m",
+    "dimensions": (0, 0),
+    "velocity": (3, 3),
+    "position": (83, 29)
+}
+
+DELAY = 0.0001
+UPDATE_BALL = 30
