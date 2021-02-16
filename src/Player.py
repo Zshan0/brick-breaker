@@ -13,7 +13,7 @@ class Player:
         self.init_time = -1
         self.option = 0
         self.powers = []
-        self.Balls = [ball]
+        self.balls = [ball]
         self.score = 0
         self.status = 0
 
@@ -35,6 +35,18 @@ class Player:
 
         self.paddle.move_paddle(self.game, value)
 
-    def game_start(self, game):
+    def move_balls(self):
+
+        for ball in self.balls:
+            if ball.is_held:
+                continue
+            if ball.move_ball(self.game):
+                continue
+            ''' If move_ball() returns False it means the ball has to be
+                deleted'''
+            ball.delete(self.game)
+            self.balls.remove(ball)
+
+    def game_start(self):
         ''' Destroy the original Player object and create a new one'''
         self.status = 1

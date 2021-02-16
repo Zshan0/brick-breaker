@@ -7,7 +7,8 @@ class Paddle(Object):
     def __init__(self, game, ball):
 
         super(Paddle, self).__init__(game, PADDLE, PADDLE["position"])
-        self.is_holding = ball
+        self.is_holding = None
+        # ball.paddle_held()
 
     def collision_reaction(self, other_object):
         ''' Sends the object with which it is going to collide.

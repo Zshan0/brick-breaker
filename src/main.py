@@ -18,15 +18,11 @@ def init_game():
     border = Border()
     game = Game(screen, menu, top, border)
     player = Player(game)
-    game.set_player(player)
     game.set_screen()
+    game.set_player(player)
+    # game.set_bricks()
 
     main_loop(game)
-
-
-def collision_checks(game):
-    ''' Checks if the objects are colliding with each other'''
-    pass
 
 
 def main_loop(game):
@@ -34,8 +30,6 @@ def main_loop(game):
     input_key = Input_class()
     ball_movement = 0
     while True:
-        game.screen.print_screen()
-        game.screen.reset_cursor()
 
         ball_movement += 1
         if ball_movement == UPDATE_BALL:
@@ -48,6 +42,9 @@ def main_loop(game):
             game.player.move_paddle(input_val)
         if input_val == 'q':
             _exit(0)
+
+        game.screen.print_screen()
+        game.screen.reset_cursor()
 
 
 init_game()

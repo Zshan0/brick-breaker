@@ -57,6 +57,8 @@ GAME = {
     "origin": (60, 4),
     "background_color": "\u001b[40;1m",
     "brick_colors": ["\u001b[42;1m", "\u001b[43;1m", "\u001b[41m"],
+    "brick_region": (0, 30),
+    "max_bricks": 5
 }
 
 
@@ -82,17 +84,26 @@ PADDLE = {
     "name": "paddle",
     "color": "\u001b[47m",
     "dimensions": (12, 0),
-    "velocity": (2, 0),
-    "position": (90, 50)
+    "velocity": (1, 0),
+    # "position": (85, 50)
+    "position": (0, 50)
 }
 
 BALL = {
     "name": "ball",
-    "color": "\u001b[47m",
+    # "color": "\u001b[47m",
+    "color": "\u001b[46;1m",
+    "character": "A",
     "dimensions": (0, 0),
-    "velocity": (3, 3),
-    "position": (83, 29)
+    "velocity": (-1, 1),
+    "position": (80, 0)
 }
 
-DELAY = 0.0001
-UPDATE_BALL = 30
+BRICK = {
+    "name": "brick",
+    "dimensions": (10, 1),
+    "velocity": (0, 0)
+}
+
+DELAY = 0.00005
+UPDATE_BALL = 1

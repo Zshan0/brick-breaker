@@ -1,5 +1,6 @@
 from Parameters import *
-
+import random
+from Brick import Brick
 
 class Game:
 
@@ -14,9 +15,37 @@ class Game:
         self.origin = GAME["origin"]
         self.background_color = GAME["background_color"]
         self.brick_colors = GAME["brick_colors"]
+        self.brick_region = GAME["brick_region"]
+        self.brick_size = BRICK["dimensions"]
+        self.max_bricks = GAME["max_bricks"]
+        self.bricks = []
 
     def set_player(self, player):
         self.player = player
+
+    def set_bricks(self):
+        region = self.brick_region
+
+        max_brick_row = int(self.dimensions[0] / self.brick_size[0])
+        bricks_so_far = 0
+
+        for row in range(region[0], region[1]):
+            for brick in range(max_brick_row):
+                coords = (brick * self.brick_size[0], row *
+                          (self.brick_size[1] + 1))
+
+                is_brick = (random.randint(0, 1)) == 0
+                if is_brick:
+                    strength = random.randint(0, len(self.brick_colors) - 1)
+                    brick = Brick(self, strength, coords)
+                    self.bricks.append(brick)
+
+                    bricks_so_far += 1
+                    if bricks_so_far == self.max_bricks:
+                        break
+            else:
+                continue
+            break
 
     def test_output(self):
         ''' To quickly check if the colors fit the palette'''

@@ -1,5 +1,4 @@
 from Parameters import *
-from Game import Game
 
 
 class Object():
@@ -19,7 +18,11 @@ class Object():
                      origin[1] + position[1]]
         end_pos = [start_pos[0] + self.dimensions[0],
                    start_pos[1] + self.dimensions[1]]
-        color = self.color + ' ' + RESET
+        if "character" in desc:
+            color = self.color + desc["character"] + RESET
+        else:
+            color = self.color + ' ' + RESET
+
         game.screen.fill_screen(start_pos, end_pos, color)
 
     def check_wall(self, game, new_position):
@@ -28,9 +31,10 @@ class Object():
         dimensions = game.dimensions
         val = ""
         if new_position[0] < 0:
+            print("left")
             val = "left"
         elif new_position[1] < 0:
-            val = "up"
+            val = "top"
         elif (new_position[0] + self.dimensions[0]) >= dimensions[0]:
             val = "right"
         elif (new_position[1] + self.dimensions[1]) >= dimensions[1]:
@@ -39,43 +43,25 @@ class Object():
             val = None
         return {"name": val}
 
-    def check_collision(self, other_object):
+    def check_collision(self, other_object, new_position):
         ''' To check if the other object passed is colliding
-            with the object which called this function'''
+            with the object which called this function.
+            New position is the position at which other_object is going
+            to be in.'''
 
-        def inside_box(self, coords):
-            ''' To check if (x, y) are inside the object '''
-            (x, y) = coords
-            x_check = (self.position[0] <= x) and \
-                ((self.position[0] + self.dimensions[0]) >= x)
+        ''' Collision for the ball'''
+        if other_object.name == "ball":
+            if new_position[1] >= self.position[1] and\
+                    new_position[1] <=\
+                    self.position[1] + self.dimensions[1]:
+                ''' y value matches, have to check for x value'''
 
-            y_check = (self.position[1] <= y) and \
-                ((self.position[1] + self.dimensions[1]) >= y)
-            return x_check and y_check
+                if new_position[0] >= self.position[0] and\
+                        new_position[0] <=\
+                        self.position[0] + self.dimensions[0]:
+                    return True
 
-        def get_corners(position, dimensions):
-            ''' Returning the corners of the object whose position and
-                dimensions are given. All the objects are rectangle'''
-            coords = [[position[0],
-                       position[1]],
-
-                      [position[0] + dimensions[0],
-                       position[1]],
-
-                      [position[0],
-                       position[1] + dimensions[1]],
-
-                      [position[0] + dimensions[0],
-                       position[1] + dimensions[1]]]
-            return coords
-
-        coords = get_corners(other_object.position, other_object.dimensions)
-
-        for coord in coords:
-            if inside_box(self, coord):
-                return True
-
-        return False
+            return False
 
     def delete(self, game):
         ''' Call before to reset the background before deleting the object'''
@@ -102,5 +88,5 @@ class Object():
                    start_pos[1] + self.dimensions[1]]
         object_color = self.color + ' ' + RESET
 
-        game.screen.fill_screen(start_pos, end_pos, object_color)
         self.position = new_position
+        game.screen.fill_screen(start_pos, end_pos, object_color)
