@@ -17,10 +17,10 @@ def init_game():
     top = Top()
     border = Border()
     game = Game(screen, menu, top, border)
-    player = Player(game)
     game.set_screen()
+    player = Player(game)
     game.set_player(player)
-    # game.set_bricks()
+    game.set_bricks()
 
     main_loop(game)
 

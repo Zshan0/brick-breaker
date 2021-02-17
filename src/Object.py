@@ -30,14 +30,13 @@ class Object():
             left, right, up, bottom or None'''
         dimensions = game.dimensions
         val = ""
-        if new_position[0] < 0:
-            print("left")
+        if int(new_position[0]) < 0:
             val = "left"
-        elif new_position[1] < 0:
+        elif int(new_position[1]) < 0:
             val = "top"
-        elif (new_position[0] + self.dimensions[0]) >= dimensions[0]:
+        elif int(new_position[0] + self.dimensions[0]) >= int(dimensions[0]):
             val = "right"
-        elif (new_position[1] + self.dimensions[1]) >= dimensions[1]:
+        elif int(new_position[1] + self.dimensions[1]) >= int(dimensions[1]):
             val = "bottom"
         else:
             val = None
@@ -51,22 +50,22 @@ class Object():
 
         ''' Collision for the ball'''
         if other_object.name == "ball":
-            if new_position[1] >= self.position[1] and\
-                    new_position[1] <=\
-                    self.position[1] + self.dimensions[1]:
+            if int(new_position[1]) >= int(self.position[1]) and\
+                    int(new_position[1]) <=\
+                    int(self.position[1] + self.dimensions[1]):
                 ''' y value matches, have to check for x value'''
 
-                if new_position[0] >= self.position[0] and\
-                        new_position[0] <=\
-                        self.position[0] + self.dimensions[0]:
+                if int(new_position[0]) >= int(self.position[0]) and\
+                        int(new_position[0]) <=\
+                        int(self.position[0] + self.dimensions[0]):
                     return True
 
             return False
 
     def delete(self, game):
         ''' Call before to reset the background before deleting the object'''
-        start_pos = [self.position[0] + game.origin[0],
-                     self.position[1] + game.origin[1]]
+        start_pos = [int(self.position[0]) + game.origin[0],
+                     int(self.position[1]) + game.origin[1]]
         end_pos = [start_pos[0] + self.dimensions[0],
                    start_pos[1] + self.dimensions[1]]
         background_color = game.background_color + ' ' + RESET
@@ -82,8 +81,8 @@ class Object():
         self.delete(game)
 
         ''' Putting the object to the new location '''
-        start_pos = [new_position[0] + game.origin[0],
-                     new_position[1] + game.origin[1]]
+        start_pos = [int(new_position[0]) + game.origin[0],
+                     int(new_position[1]) + game.origin[1]]
         end_pos = [start_pos[0] + self.dimensions[0],
                    start_pos[1] + self.dimensions[1]]
         object_color = self.color + ' ' + RESET

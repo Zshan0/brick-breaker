@@ -20,7 +20,7 @@ class Paddle(Object):
     def move_paddle(self, game, value):
         ''' Since the paddle will only move either left or right, the value
             will be -1, 0 or 1.'''
-        new_position = [self.position[0] + (value * self.velocity[0]),
+        new_position = [self.position[0] + int(value * self.velocity[0]),
                         self.position[1]]
 
         check_wall = self.check_wall(game, new_position)

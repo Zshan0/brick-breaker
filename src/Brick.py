@@ -19,10 +19,14 @@ class Brick(Object):
         ''' The only other collision that can happen is the ball collision'''
         assert other_object["name"] == "ball"
 
+        if self.strength == len(self.game.brick_colors):
+            ''' Maximum Strength ones can't be broken'''
+            return True
+
         self.strength -= 1
         self.color = self.game.brick_colors[self.strength]
         if self.strength == -1:
             self.delete(self.game)
-            return
+            return False
 
         self.displace(self.game, self.position)

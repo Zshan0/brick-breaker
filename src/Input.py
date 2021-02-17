@@ -23,7 +23,7 @@ class Input_class:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return value
 
-    def input_func(self, timeout=0.1):
+    def input_func(self, timeout=TIMEOUT):
 
         signal.signal(signal.SIGALRM, self.timeout_handler)
         signal.setitimer(signal.ITIMER_REAL, timeout)
@@ -32,8 +32,8 @@ class Input_class:
             value = self.input_char()
             signal.alarm(0)
 
-            if value in [b'a', b'd', b'\r', b' ', b'q']:
-                time.sleep(timeout)
+            # if value in [b'a', b'd', b'\r', b' ', b'q']:
+            #     time.sleep(timeout)
 
             return value
         except:
