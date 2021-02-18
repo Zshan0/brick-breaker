@@ -19,6 +19,7 @@ class Player:
         self.status = 0
         self.init_time = time.time()
         self.game.set_lives(self.lives)
+        self.powerups = []
 
     def reduce_life(self):
 
@@ -76,6 +77,62 @@ class Player:
             else:
                 ''' All the lives are gone'''
                 self.game_over()
+
+    def move_powerups(self):
+        for powerup in self.powerups:
+            if not powerup.move_powerup(self.game):
+                self.powerups.remove(powerup)
+
+    def ball_increase(self):
+        ''' Doubling the balls with opposite x velocity'''
+
+        new_balls = []
+
+        for ball in self.balls:
+            new_ball = Ball()
+            new_ball.velocity = [-ball.velocity[0], ball.velocity[1]]
+            new_ball.displace(self.game, new_ball.position)
+            new_ball.append(new_ball)
+
+        self.balls.extend(new_balls)
+
+    def ball_fast(self):
+        for ball in self.balls:
+            ball.velocity = [2 * a for a in ball.velocity]
+
+
+
+
+    def powerup_gain(self, powerup):
+        self.powers.append({"powerup": powerup, "time": time.time()})
+
+        if powerup.character == "E":
+            ''' Expand the paddle'''
+            self.paddle.expand_paddle()
+        elif powerup.character == "S":
+            ''' Shrink the paddle'''
+            self.paddle.shrink_paddle()
+        elif power.character == "B":
+            ''' Ball multiplier'''
+            self.ball_increase()
+
+    def powerup_loss(self, powerup):
+
+        if powerup.character == "E":
+            ''' Expand the paddle'''
+            self.paddle.shrink_paddle()
+        elif powerup.character == "S":
+            ''' Shrink the paddle'''
+            self.paddle.expand_paddle()
+
+        self.powers.remove(powerup)
+
+    def powerup_check(self):
+        ''' Checks if the powerup span has runout'''
+        for power in self.power:
+            time_passed = time.time() - power["time"]
+            if time_passed >= POWERUP_SPAN:
+                self.powerup_loss(power)
 
     def game_start(self):
         ''' Destroy the original Player object and create a new one'''

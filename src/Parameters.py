@@ -92,17 +92,18 @@ PADDLE = {
     # "dimensions": (179, 0),
     "velocity": (1, 0),
     # "position": (0, 30)
-    "position": (83, 30)
+    "position": (83, 30),
+    "change": 2
 }
 
 BALL = {
     "name": "ball",
     # "color": "\u001b[47m",
-    "color": "\u001b[46;1m",
-    "character": "A",
+    "color": "\u001b[40;1m",
+    "character": "O",
     "dimensions": (0, 0),
-    "velocity": (1, 0.5),
-    "position": (83, 28)
+    "velocity": (0.5, 0.5),
+    "position": (83, 29)
 }
 
 BRICK = {
@@ -111,6 +112,16 @@ BRICK = {
     "velocity": (0, 0)
 }
 
+POWERUP = {
+    "name": "powerup",
+    "color": "\u001b[40m\u001b[32;1m",
+    "text": ["E", "S", "B", "F", "T", "P"],
+    "dimensions": (0, 0),
+    "velocity": (0, 0.5),
+}
+
 DELAY = 0.0000005
 TIMEOUT = 0.1
 UPDATE_BALL = 1
+
+POWERUP_SPAN = 10

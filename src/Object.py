@@ -11,6 +11,7 @@ class Object():
         self.dimensions = desc["dimensions"]
         self.velocity = desc["velocity"]
         self.position = position
+        self.character = ' '
 
         ''' setting the object onto the given position'''
         origin = GAME["origin"]
@@ -19,6 +20,7 @@ class Object():
         end_pos = [start_pos[0] + self.dimensions[0],
                    start_pos[1] + self.dimensions[1]]
         if "character" in desc:
+            self.character = desc["character"]
             color = self.color + desc["character"] + RESET
         else:
             color = self.color + ' ' + RESET
@@ -85,7 +87,7 @@ class Object():
                      int(new_position[1]) + game.origin[1]]
         end_pos = [start_pos[0] + self.dimensions[0],
                    start_pos[1] + self.dimensions[1]]
-        object_color = self.color + ' ' + RESET
+        object_color = self.color + self.character + RESET
 
         self.position = new_position
         game.screen.fill_screen(start_pos, end_pos, object_color)

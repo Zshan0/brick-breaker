@@ -6,7 +6,6 @@ from Game import Game
 from Border import Border
 from Player import Player
 from Input import Input_class
-from os import _exit
 
 
 def init_game(player_status):
@@ -51,6 +50,7 @@ def main_loop(game):
         if ball_movement == UPDATE_BALL:
             ball_movement = 0
             game.player.move_balls()
+            game.player.move_powerups()
 
         input_val = input_key.input_func()
         if input_val in ['a', 'd', ' ']:

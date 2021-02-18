@@ -45,6 +45,8 @@ class Ball(Object):
         self.current_velocity = (relative,
                                  abs(relative) - 1)
 
+        paddle.catch_ball(self.game.player, self)
+
     def collision_side(self, brick, new_position):
         new_position = [int(new_position[0]), int(new_position[1])]
         ''' To check which side the collision happened'''
@@ -104,6 +106,7 @@ class Ball(Object):
                 of the paddle only, side ones are also taken to be top.
                 '''
             self.paddle_collision(other_object["value"], new_position)
+
 
         elif other_object["name"] == "brick":
             ''' Splits into cases on what direction it bounces off'''
