@@ -1,6 +1,7 @@
 from Parameters import *
 import random
 from Brick import Brick
+import time
 
 class Game:
 
@@ -46,6 +47,12 @@ class Game:
             else:
                 continue
             break
+
+    def game_over(self):
+        self.top.display_game_over(self.screen)
+
+    def set_lives(self, lives):
+        self.top.set_lives(self.screen, lives)
 
     def test_output(self):
         ''' To quickly check if the colors fit the palette'''

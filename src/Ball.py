@@ -6,7 +6,9 @@ class Ball(Object):
 
     def __init__(self, game):
 
-        super(Ball, self).__init__(game, BALL, BALL["position"])
+        position = BALL["position"]
+
+        super(Ball, self).__init__(game, BALL, position)
         self.is_held = False
         self.current_velocity = self.velocity
         self.game = game
@@ -78,7 +80,7 @@ class Ball(Object):
             assert new_position[0] >= brick.position[0]
             assert new_position[0] <= brick.position[0] + brick.dimensions[0]
             val = "top"
-        print(val)
+        # print(val)
         return val
 
     def collision_reaction(self, other_object, new_position):
@@ -169,9 +171,9 @@ class Ball(Object):
                                              },
                                             new_position)
 
-                    # if not brick.collision_reaction(self):
-                    #     #     ''' The brick has to be removed'''
-                    #     game.bricks.remove(brick)
+                    if not brick.collision_reaction(self):
+                        #     #     ''' The brick has to be removed'''
+                        game.bricks.remove(brick)
                     new_position = self.new_position()
                     not_collision = False
 

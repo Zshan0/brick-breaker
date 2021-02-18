@@ -47,6 +47,18 @@ class Top:
             screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
                 text_color + time[x] + RESET
 
+    def display_game_over(self, screen):
+        origin = TOP["origin"]
+        pos = TOP["game_over_pos"]
+        text = TOP["game_over_text"]
+        text_color = TOP["text_color"]
+
+        for x in range(len(text)):
+            screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
+                text_color + text[x] + RESET
+        self.set_lives(screen, -1)
+        self.set_time(screen, -1)
+
     def set_screen(self, screen):
         background = TOP["background_color"] + ' ' + RESET
         start_pos = [TOP["origin"][0],

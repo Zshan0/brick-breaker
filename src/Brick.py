@@ -13,13 +13,13 @@ class Brick(Object):
 
     def collision_reaction(self, other_object):
 
-        if other_object["name"] == "power":
+        if other_object.name == "power":
             ''' Do nothing if powerup is colliding, just let it pass'''
             return
         ''' The only other collision that can happen is the ball collision'''
-        assert other_object["name"] == "ball"
+        assert other_object.name == "ball"
 
-        if self.strength == len(self.game.brick_colors):
+        if self.strength == len(self.game.brick_colors) - 1:
             ''' Maximum Strength ones can't be broken'''
             return True
 
@@ -30,3 +30,4 @@ class Brick(Object):
             return False
 
         self.displace(self.game, self.position)
+        return True

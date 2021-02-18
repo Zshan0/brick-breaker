@@ -32,10 +32,13 @@ MENU = {
     "selected_option_color": '\u001b[40m\u001b[32;1m',
     "name_pos": (15, 10),
     "name": "B R I C K - B R E A K E R",
-    "options_pos": [(20, 21), (20, 23), (20, 25)],
-    "options": ["N E W   G A M E",
-                "C O N T I N U E",
-                "E X I T"],
+    "options_pos": [(20, 21), (20, 23), (20, 25), (20, 27), (20, 29), (20, 31)],
+    "options": ["1. N E W   G A M E",
+                "2. C O N T I N U E",
+                "3. E X I T",
+                "INSTRUCTIONS:",
+                "Press q to pause",
+                "After Pausing press the option number."],
 }
 
 TOP = {
@@ -48,7 +51,9 @@ TOP = {
     "heart_color": '\u001b[31;1m',
     "time_icon": 'TIME',
     "time_color": '\u001b[37;1m',
-    "time_pos": (170, 2)
+    "time_pos": (170, 2),
+    "game_over_pos": (50, 2),
+    "game_over_text": "G A M E-O V E R"
 
 }
 
