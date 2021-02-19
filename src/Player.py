@@ -2,7 +2,7 @@ from Parameters import *
 from Paddle import Paddle
 from Ball import Ball
 import time
-from os import _exit
+from os import _exit, system
 
 
 class Player:
@@ -83,16 +83,18 @@ class Player:
             if not powerup.move_powerup(self.game):
                 self.powerups.remove(powerup)
 
+        self.powerup_check()
+
     def ball_increase(self):
         ''' Doubling the balls with opposite x velocity'''
 
         new_balls = []
 
         for ball in self.balls:
-            new_ball = Ball()
+            new_ball = Ball(self.game)
             new_ball.velocity = [-ball.velocity[0], ball.velocity[1]]
-            new_ball.displace(self.game, new_ball.position)
-            new_ball.append(new_ball)
+            new_ball.displace(self.game, ball.position)
+            new_balls.append(new_ball)
 
         self.balls.extend(new_balls)
 
@@ -100,36 +102,42 @@ class Player:
         for ball in self.balls:
             ball.velocity = [2 * a for a in ball.velocity]
 
-
-
-
     def powerup_gain(self, powerup):
+        is_there = len(list(filter(lambda power:
+                                   power["powerup"].character ==
+                                   powerup.character,
+                                   self.powers)))
+        if is_there > 0:
+            ''' Powerup already present'''
+            return
+
         self.powers.append({"powerup": powerup, "time": time.time()})
 
         if powerup.character == "E":
             ''' Expand the paddle'''
-            self.paddle.expand_paddle()
+            self.paddle.expand_paddle(self)
         elif powerup.character == "S":
             ''' Shrink the paddle'''
-            self.paddle.shrink_paddle()
-        elif power.character == "B":
+            self.paddle.shrink_paddle(self)
+        elif powerup.character == "B":
             ''' Ball multiplier'''
             self.ball_increase()
 
-    def powerup_loss(self, powerup):
+    def powerup_loss(self, powerup_dict):
+        powerup = powerup_dict["powerup"]
 
         if powerup.character == "E":
             ''' Expand the paddle'''
-            self.paddle.shrink_paddle()
+            self.paddle.shrink_paddle(self)
         elif powerup.character == "S":
             ''' Shrink the paddle'''
-            self.paddle.expand_paddle()
+            self.paddle.expand_paddle(self)
 
-        self.powers.remove(powerup)
+        self.powers.remove(powerup_dict)
 
     def powerup_check(self):
         ''' Checks if the powerup span has runout'''
-        for power in self.power:
+        for power in self.powers:
             time_passed = time.time() - power["time"]
             if time_passed >= POWERUP_SPAN:
                 self.powerup_loss(power)
@@ -150,6 +158,7 @@ class Player:
             self.game_start()
             return True
         elif option == "3":
+            system("stty echo")
             _exit(0)
         else:
             return True

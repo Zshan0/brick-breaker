@@ -27,12 +27,12 @@ class Game:
     def set_bricks(self):
         region = self.brick_region
 
-        max_brick_row = int(self.dimensions[0] / self.brick_size[0])
+        max_brick_row = int(self.dimensions[0] / (self.brick_size[0] + 1))
         bricks_so_far = 0
 
         for row in range(region[0], region[1]):
             for brick in range(max_brick_row):
-                coords = (brick * self.brick_size[0], row *
+                coords = (brick * (self.brick_size[0] + 1), row *
                           (self.brick_size[1] + 1))
 
                 is_brick = (random.randint(0, 1)) == 0
@@ -47,6 +47,37 @@ class Game:
             else:
                 continue
             break
+
+    def explosive_brick(self, brick):
+        ''' The passed brick is deleted anyway'''
+        cur_pos = brick.position
+        left_pos = [cur_pos[0] - (brick.dimensions[0] + 1),
+                    cur_pos[1]]
+        right_pos = [cur_pos[0] + (brick.dimensions[0] + 1),
+                     cur_pos[1]]
+        up_pos = [cur_pos[0],
+                  cur_pos[1] - (brick.dimensions[1] + 1)]
+        down_pos = [cur_pos[0],
+                    cur_pos[1] + (brick.dimensions[1] + 1)]
+
+        up_left_pos = [left_pos[0], up_pos[1]]
+        up_right_pos = [right_pos[0], up_pos[1]]
+        down_left_pos = [left_pos[0], down_pos[1]]
+        down_right_pos = [right_pos[0], down_pos[1]]
+
+        brick_pos = [left_pos, right_pos, up_pos, down_pos, up_left_pos,
+                     up_right_pos, down_left_pos, down_right_pos]
+
+        for brick in self.bricks:
+
+            for req_brick in brick_pos:
+                if req_brick[0] == brick.position[0]:
+                    if req_brick[1] == brick.position[1]:
+
+                        brick.collision_reaction("OP")
+                        if brick in self.bricks:
+                            self.bricks.remove(brick)
+
 
     def game_over(self):
         self.top.display_game_over(self.screen)

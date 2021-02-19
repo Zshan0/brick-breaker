@@ -37,7 +37,6 @@ class Screen:
                    fmt='%s',
                    delimiter='',
                    newline='\n')
-
         time.sleep(DELAY)
 
     def fill_screen(self, start_pos, end_pos, color):

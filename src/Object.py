@@ -51,7 +51,7 @@ class Object():
             to be in.'''
 
         ''' Collision for the ball'''
-        if other_object.name == "ball":
+        if other_object.name == "ball" or other_object.name == "powerup":
             if int(new_position[1]) >= int(self.position[1]) and\
                     int(new_position[1]) <=\
                     int(self.position[1] + self.dimensions[1]):
@@ -63,6 +63,7 @@ class Object():
                     return True
 
             return False
+
 
     def delete(self, game):
         ''' Call before to reset the background before deleting the object'''

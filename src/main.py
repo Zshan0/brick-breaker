@@ -6,11 +6,12 @@ from Game import Game
 from Border import Border
 from Player import Player
 from Input import Input_class
-
+import os
 
 def init_game(player_status):
     ''' initializiing the objects for the game and printing the start
         screen.'''
+    os.system("stty -echo")
     screen = Screen()
     menu = Menu()
     top = Top()
@@ -51,6 +52,7 @@ def main_loop(game):
             ball_movement = 0
             game.player.move_balls()
             game.player.move_powerups()
+
 
         input_val = input_key.input_func()
         if input_val in ['a', 'd', ' ']:

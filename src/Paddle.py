@@ -17,9 +17,6 @@ class Paddle(Object):
         if other_object["name"] == "Boundary":
             return
 
-
-
-
     def move_paddle(self, game, value):
         ''' Since the paddle will only move either left or right, the value
             will be -1, 0 or 1.'''
@@ -49,7 +46,12 @@ class Paddle(Object):
         self.is_holding = None
 
     def catch_ball(self, player, ball):
-        if "P" in player.powers and self.is_holding is None:
+        is_there = len(list(filter(lambda power:
+                                   power["powerup"].character ==
+                                   "P",
+                                   player.powers)))
+
+        if is_there > 0 and self.is_holding is None:
             ''' The player is able to catch the ball'''
             self.is_holding = ball
             ball.paddle_held()
@@ -59,11 +61,12 @@ class Paddle(Object):
     def expand_paddle(self, player):
         self.dimensions = [self.dimensions[0] + PADDLE["change"],
                            self.dimensions[1]]
-        self.displace(player.game, self.dimensions)
+        self.displace(player.game, self.position)
 
     def shrink_paddle(self, player):
+        self.delete(player.game)
         self.dimensions = [self.dimensions[0] - PADDLE["change"],
                            self.dimensions[1]]
-        self.displace(player.game, self.dimensions)
+        self.displace(player.game, self.position)
 
 

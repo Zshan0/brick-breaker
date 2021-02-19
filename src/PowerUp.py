@@ -29,13 +29,12 @@ class PowerUp(Object):
     def move_powerup(self, game):
 
         ''' Removing the old position and replacing it old value'''
-        start_pos = [int(self.position[0]) + game.origin[0],
+        cur_pos = [int(self.position[0]) + game.origin[0],
                      int(self.position[1]) + game.origin[1]]
-        end_pos = [start_pos[0] + self.dimensions[0],
-                   start_pos[1] + self.dimensions[1]]
-        background_color = self.prev_color
 
-        game.screen.fill_screen(start_pos, end_pos, background_color)
+
+
+        game.screen.screen_string[cur_pos[1]][cur_pos[0]] = self.prev_color
 
         ''' Putting the powerup at the new position'''
         new_position = [self.position[0] + self.velocity[0],
@@ -50,15 +49,21 @@ class PowerUp(Object):
             game.player.powerup_gain(self)
             return False
 
+        self.prev_color = game.background_color + ' ' + RESET
+
         start_pos = [int(self.position[0] + self.velocity[0]) + game.origin[0],
                      int(self.position[1] + self.velocity[1]) + game.origin[1]]
-        end_pos = [start_pos[0] + self.dimensions[0],
-                   start_pos[1] + self.dimensions[1]]
 
-        background_color = self.color + self.character + RESET
-        self.prev_color = game.screen.screen_string[start_pos[1]][start_pos[0]]
+        for brick in game.bricks:
+            if brick.check_collision(self, new_position):
+                self.prev_color = game.screen.screen_string[start_pos[1]
+                                                            ][start_pos[0]]
+                break
 
-        game.screen.fill_screen(start_pos, end_pos, background_color)
+        new_color = self.color + self.character + RESET
+
+        game.screen.screen_string[start_pos[1]][start_pos[0]
+                                                ] = new_color
 
         self.position = new_position
         return True

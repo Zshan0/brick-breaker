@@ -38,14 +38,13 @@ class Ball(Object):
         ''' relative position of the ball wrt paddles centre'''
         x_value = (new_position[0] - paddle.position[0]) -\
             paddle.dimensions[0] / 2
-
         relative = x_value / paddle.dimensions[0]
         assert x_value < paddle.dimensions[0]
 
         self.current_velocity = (relative,
                                  abs(relative) - 1)
 
-        paddle.catch_ball(self.game.player, self)
+        return paddle.catch_ball(self.game.player, self)
 
     def collision_side(self, brick, new_position):
         new_position = [int(new_position[0]), int(new_position[1])]
@@ -105,10 +104,18 @@ class Ball(Object):
             ''' It is assumed that the collision is happening at the top
                 of the paddle only, side ones are also taken to be top.
                 '''
-            self.paddle_collision(other_object["value"], new_position)
+            return self.paddle_collision(other_object["value"], new_position)
 
 
         elif other_object["name"] == "brick":
+
+            is_there = len(list(filter(lambda power:
+                           power["powerup"].character == "T",
+                           self.game.player.powers)))
+
+            if is_there > 0:
+                return
+
             ''' Splits into cases on what direction it bounces off'''
             side = self.collision_side(other_object["value"],
                                        new_position)
@@ -157,10 +164,12 @@ class Ball(Object):
 
         if game.player.paddle.check_collision(self, new_position):
             ''' Checking for the collision with Paddle '''
-            self.collision_reaction({"name": "paddle",
-                                     "value": game.player.paddle},
-                                    new_position)
-            new_position = self.new_position()
+            if not self.collision_reaction({"name": "paddle",
+                                            "value": game.player.paddle},
+                                           new_position):
+                new_position = self.new_position()
+                self.displace(self.game, new_position)
+                return True
 
         not_collision = True
         while not_collision:
@@ -174,11 +183,29 @@ class Ball(Object):
                                              },
                                             new_position)
 
-                    if not brick.collision_reaction(self):
-                        #     #     ''' The brick has to be removed'''
-                        game.bricks.remove(brick)
-                    new_position = self.new_position()
-                    not_collision = False
+                    ''' Through ball check'''
+                    is_there = len(list(filter(lambda power:
+                                   power["powerup"].character ==
+                                   "T",
+                                   game.player.powers)))
+                    breakable = ""
+                    if is_there > 0:
+                        breakable = "OP"
+
+                    if not brick.collision_reaction(breakable):
+                        ''' The brick has to be removed'''
+                        if brick in game.bricks:
+                            game.bricks.remove(brick)
+
+                    if is_there == 0:
+                        new_position = self.new_position()
+                        not_collision = False
+
+            for brick in game.bricks:
+                if brick.strength == -1:
+                    if brick.powerup is not None:
+                        brick.powerup.release_powerup(game)
+                    brick.delete(game)
 
             if not not_collision:
                 ''' Position was updated, hence there is a need to

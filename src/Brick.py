@@ -20,17 +20,24 @@ class Brick(Object):
 
         self.powerup = PowerUp(powerup_num, powerup_pos)
 
-    def collision_reaction(self, other_object):
+    def collision_reaction(self, breakable):
+        if breakable == "OP":
+            if self.strength == len(self.game.brick_colors) - 1:
+                self.strength = -1
+                self.game.explosive_brick(self)
 
-        if other_object.name == "power":
-            ''' Do nothing if powerup is colliding, just let it pass'''
-            return
-        ''' The only other collision that can happen is the ball collision'''
-        assert other_object.name == "ball"
+            if self.powerup is not None:
+                self.powerup.release_powerup(self.game)
+            self.delete(self.game)
+            return False
+
+        if self.strength == len(self.game.brick_colors) - 2:
+            ''' Unbreakable ones'''
+            return True
 
         if self.strength == len(self.game.brick_colors) - 1:
-            ''' Maximum Strength ones can't be broken'''
-            return True
+            self.game.explosive_brick(self)
+            self.strength = 0
 
         self.strength -= 1
         self.color = self.game.brick_colors[self.strength]
@@ -39,7 +46,6 @@ class Brick(Object):
                 release it.'''
             if self.powerup is not None:
                 self.powerup.release_powerup(self.game)
-
 
             self.delete(self.game)
             return False

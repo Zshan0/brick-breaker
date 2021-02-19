@@ -30,6 +30,8 @@ class Input_class:
 
         try:
             value = self.input_char()
+            if value == "\x03":
+                value = "3"
             signal.alarm(0)
 
             # if value in [b'a', b'd', b'\r', b' ', b'q']:
