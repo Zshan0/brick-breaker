@@ -66,7 +66,7 @@ GAME = {
     "brick_colors": ["\u001b[42;1m", "\u001b[43;1m", "\u001b[41m",
                      "\u001b[47m", "\u001b[45;1m"],
     "brick_region": (0, 10),
-    "max_bricks": 100,
+    "max_bricks": 1,
     "max_explosive": 8,
 }
 

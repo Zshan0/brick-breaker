@@ -68,9 +68,7 @@ class Top:
         for x in range(len(text)):
             screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
                 text_color + text[x] + RESET
-        self.set_lives(screen, -1)
         self.set_time(screen, -1)
-        self.set_score(screen, -1)
 
     def set_screen(self, screen):
         background = TOP["background_color"] + ' ' + RESET

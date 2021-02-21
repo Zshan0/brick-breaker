@@ -96,7 +96,10 @@ class Game:
                             self.bricks.remove(brick)
 
     def bricks_check(self):
-        if len(self.bricks) == 0:
+        breakable_bricks = list(filter(lambda x: x.strength !=
+                                       len(self.brick_colors) - 2,
+                                self.bricks))
+        if len(breakable_bricks) == 0:
             self.player.game_over()
 
     def game_over(self):

@@ -32,8 +32,6 @@ class PowerUp(Object):
         cur_pos = [int(self.position[0]) + game.origin[0],
                      int(self.position[1]) + game.origin[1]]
 
-
-
         game.screen.screen_string[cur_pos[1]][cur_pos[0]] = self.prev_color
 
         ''' Putting the powerup at the new position'''

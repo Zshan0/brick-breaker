@@ -112,6 +112,8 @@ class Player:
             self.powers.append({"powerup": powerup, "time": time.time()})
             return
 
+        self.powers.append({"powerup": powerup, "time": time.time()})
+
         if powerup.character == "E":
             ''' Expand the paddle'''
             self.paddle.expand_paddle(self)
