@@ -28,7 +28,16 @@ class Brick(Object):
 
             if self.powerup is not None:
                 self.powerup.release_powerup(self.game)
-            self.delete(self.game)
+                self.delete(self.game)
+
+            for brick in self.game.bricks:
+                if brick.strength == len(self.game.brick_colors) - 1:
+                    brick.strength = -1
+                    self.game.explosive_brick(brick)
+                    brick.delete(self.game)
+                    if brick in self.game.bricks:
+                        self.game.bricks.remove(brick)
+
             return False
 
         if self.strength == len(self.game.brick_colors) - 2:

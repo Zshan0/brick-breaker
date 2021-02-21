@@ -31,18 +31,30 @@ class Top:
     def set_time(self, screen, player_time=-1):
         ''' displaying the icon and the amount of time that has passed.
             if time == -1 then the TOP is not in progress.'''
-
-        # USE ORIGIN
         origin = TOP["origin"]
         icon = TOP["time_icon"]
         pos = TOP["time_pos"]
         text_color = TOP["text_color"]
         time = icon
         if player_time == -1:
-            time += ' -'
+            time += ' - '
         else:
             time += ' ' + str(int(player_time))
         screen.screen_string[2][origin[0] + pos[0]] = 'A'
+        for x in range(len(time)):
+            screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
+                text_color + time[x] + RESET
+
+    def set_score(self, screen, player_score=-1):
+        origin = TOP["origin"]
+        icon = TOP["score_icon"]
+        pos = TOP["score_pos"]
+        text_color = TOP["text_color"]
+        time = icon
+        if player_score == -1:
+            time += ' -      '
+        else:
+            time += ' ' + str(int(player_score))
         for x in range(len(time)):
             screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
                 text_color + time[x] + RESET
@@ -58,6 +70,7 @@ class Top:
                 text_color + text[x] + RESET
         self.set_lives(screen, -1)
         self.set_time(screen, -1)
+        self.set_score(screen, -1)
 
     def set_screen(self, screen):
         background = TOP["background_color"] + ' ' + RESET
@@ -69,3 +82,4 @@ class Top:
         screen.fill_screen(start_pos, end_pos, background)
         self.set_lives(screen)
         self.set_time(screen)
+        self.set_score(screen)

@@ -5,10 +5,10 @@ from Object import Object
 class Paddle(Object):
 
     def __init__(self, game, ball):
-
         super(Paddle, self).__init__(game, PADDLE, PADDLE["position"])
         self.is_holding = ball
         ball.paddle_held()
+        self.game = game
 
     def collision_reaction(self, other_object):
         ''' Sends the object with which it is going to collide.
@@ -44,6 +44,7 @@ class Paddle(Object):
             self.is_holding.paddle_release()
 
         self.is_holding = None
+        self.displace(self.game, self.position)
 
     def catch_ball(self, player, ball):
         is_there = len(list(filter(lambda power:

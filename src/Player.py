@@ -8,7 +8,7 @@ from os import _exit, system
 class Player:
     def __init__(self, game):
         self.game = game
-        ball = Ball(game)
+        ball = Ball(game, 1)
         self.paddle = Paddle(game, ball)
         self.lives = 3
         self.init_time = -1
@@ -92,7 +92,7 @@ class Player:
 
         for ball in self.balls:
             new_ball = Ball(self.game)
-            new_ball.velocity = [-ball.velocity[0], ball.velocity[1]]
+            new_ball.velocity = [-ball.velocity[1], ball.velocity[0]]
             new_ball.displace(self.game, ball.position)
             new_balls.append(new_ball)
 
@@ -103,15 +103,14 @@ class Player:
             ball.velocity = [2 * a for a in ball.velocity]
 
     def powerup_gain(self, powerup):
-        is_there = len(list(filter(lambda power:
-                                   power["powerup"].character ==
-                                   powerup.character,
-                                   self.powers)))
-        if is_there > 0:
+        is_there = list(filter(lambda power: power["powerup"].character ==
+                               powerup.character,
+                               self.powers))
+        if len(is_there) > 0:
             ''' Powerup already present'''
+            self.powers.remove(is_there[0])
+            self.powers.append({"powerup": powerup, "time": time.time()})
             return
-
-        self.powers.append({"powerup": powerup, "time": time.time()})
 
         if powerup.character == "E":
             ''' Expand the paddle'''
@@ -162,3 +161,12 @@ class Player:
             _exit(0)
         else:
             return True
+
+    def score_reset(self):
+        self.score = 0
+
+    def score_increase(self, strength):
+        self.score += BRICK_SCORE[strength]
+        self.game.top.set_score(self.game.screen, self.score)
+
+

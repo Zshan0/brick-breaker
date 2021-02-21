@@ -52,7 +52,7 @@ def main_loop(game):
             ball_movement = 0
             game.player.move_balls()
             game.player.move_powerups()
-
+            game.bricks_check()
 
         input_val = input_key.input_func()
         if input_val in ['a', 'd', ' ']:

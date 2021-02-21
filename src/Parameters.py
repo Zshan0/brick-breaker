@@ -53,7 +53,9 @@ TOP = {
     "time_color": '\u001b[37;1m',
     "time_pos": (170, 2),
     "game_over_pos": (50, 2),
-    "game_over_text": "G A M E-O V E R"
+    "game_over_text": "G A M E-O V E R",
+    "score_pos": (80, 2),
+    "score_icon": "SCORE"
 
 }
 
@@ -63,8 +65,9 @@ GAME = {
     "background_color": "\u001b[40;1m",
     "brick_colors": ["\u001b[42;1m", "\u001b[43;1m", "\u001b[41m",
                      "\u001b[47m", "\u001b[45;1m"],
-    "brick_region": (0, 30),
-    "max_bricks": 100
+    "brick_region": (0, 10),
+    "max_bricks": 100,
+    "max_explosive": 8,
 }
 
 
@@ -101,7 +104,7 @@ BALL = {
     "name": "ball",
     # "color": "\u001b[47m",
     "color": "\u001b[40;1m",
-    "character": "●",
+    "character": "O",
     "dimensions": (0, 0),
     "velocity": (0.5, 0.5),
     "position": (83, 29)
@@ -126,3 +129,4 @@ TIMEOUT = 0.1
 UPDATE_BALL = 1
 
 POWERUP_SPAN = 10
+BRICK_SCORE = [10, 20, 40, 0, 800]

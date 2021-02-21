@@ -19,6 +19,7 @@ class Game:
         self.brick_region = GAME["brick_region"]
         self.brick_size = BRICK["dimensions"]
         self.max_bricks = GAME["max_bricks"]
+        self.max_explosive = GAME["max_explosive"]
         self.bricks = []
 
     def set_player(self, player):
@@ -30,20 +31,34 @@ class Game:
         max_brick_row = int(self.dimensions[0] / (self.brick_size[0] + 1))
         bricks_so_far = 0
 
+        explosive_row = random.randint(region[0], region[1] - 1)
+        explosive_bricks = 0
+
         for row in range(region[0], region[1]):
             for brick in range(max_brick_row):
                 coords = (brick * (self.brick_size[0] + 1), row *
                           (self.brick_size[1] + 1))
 
-                is_brick = (random.randint(0, 1)) == 0
-                if is_brick:
-                    strength = random.randint(0, len(self.brick_colors) - 1)
-                    brick = Brick(self, strength, coords)
+                if row == explosive_row and\
+                        explosive_bricks < self.max_explosive:
+                    brick = Brick(self,
+                                  len(self.brick_colors) - 1,
+                                  coords)
                     self.bricks.append(brick)
-
                     bricks_so_far += 1
-                    if bricks_so_far == self.max_bricks:
-                        break
+                    explosive_bricks += 1
+
+                else:
+                    is_brick = (random.randint(0, 1)) == 0
+                    if is_brick:
+                        strength = random.randint(0,
+                                                  len(self.brick_colors) - 2)
+                        brick = Brick(self, strength, coords)
+                        self.bricks.append(brick)
+                        bricks_so_far += 1
+
+                if bricks_so_far == self.max_bricks:
+                    break
             else:
                 continue
             break
@@ -73,11 +88,16 @@ class Game:
             for req_brick in brick_pos:
                 if req_brick[0] == brick.position[0]:
                     if req_brick[1] == brick.position[1]:
+                        if brick.strength == len(self.brick_colors) - 1:
+                            continue
 
                         brick.collision_reaction("OP")
                         if brick in self.bricks:
                             self.bricks.remove(brick)
 
+    def bricks_check(self):
+        if len(self.bricks) == 0:
+            self.player.game_over()
 
     def game_over(self):
         self.top.display_game_over(self.screen)

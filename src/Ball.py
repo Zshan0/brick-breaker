@@ -1,12 +1,17 @@
 from Parameters import *
 from Object import Object
+from random import randint
 
 
 class Ball(Object):
 
-    def __init__(self, game):
+    def __init__(self, game, on_paddle=0):
 
         position = BALL["position"]
+        if on_paddle == 1:
+            ''' Spawned on the paddle'''
+            position = [position[0] + randint(0, PADDLE["dimensions"][0]),
+                        position[1]]
 
         super(Ball, self).__init__(game, BALL, position)
         self.is_held = False
@@ -191,7 +196,7 @@ class Ball(Object):
                     breakable = ""
                     if is_there > 0:
                         breakable = "OP"
-
+                    self.game.player.score_increase(brick.strength)
                     if not brick.collision_reaction(breakable):
                         ''' The brick has to be removed'''
                         if brick in game.bricks:
