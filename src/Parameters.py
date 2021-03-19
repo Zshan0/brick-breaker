@@ -55,8 +55,10 @@ TOP = {
     "game_over_pos": (50, 2),
     "game_over_text": "G A M E-O V E R",
     "score_pos": (80, 2),
-    "score_icon": "SCORE"
-
+    "score_icon": "SCORE",
+    "bar_pos": (100, 2),
+    "level_pos": (20, 2),
+    "level_icon": "level"
 }
 
 GAME = {
@@ -95,7 +97,7 @@ PADDLE = {
     "dimensions": (10, 0),
     # "dimensions": (179, 0),
     "velocity": (1, 0),
-    # "position": (0, 30)
+    # "position": (83, 15),
     "position": (83, 30),
     "change": 2
 }
@@ -108,7 +110,18 @@ BALL = {
     "dimensions": (0, 0),
     "velocity": (0.5, 0.5),
     "position": (83, 29)
+    # "position": (83, 14)
 }
+
+LASER = {
+    "name": "laser",
+    # "color": "\u001b[47m",
+    "color": "\u001b[43;1m",
+    "character": "O",
+    "dimensions": (0, 0),
+    "velocity": (0, -1)
+}
+
 
 BRICK = {
     "name": "brick",
@@ -119,14 +132,46 @@ BRICK = {
 POWERUP = {
     "name": "powerup",
     "color": "\u001b[40m\u001b[32;1m",
-    "text": ["E", "S", "B", "F", "T", "P"],
+    "text": ["E", "S", "B", "F", "T", "P", "L"],
+    # "text": ["L"],
+    "dimensions": (0, 0),
+    "velocity": (0, 0.3),
+}
+
+BODY = {
+    "name": "body",
+    "color": "\u001b[42;1m",
+    "dimensions": (50, 0),
+    # "dimensions": (179, 0),
+    "velocity": (1, 0),
+    # "position": (0, 30)
+    "position": (83, 0),
+    "change": 2
+}
+
+BOMB = {
+    "name": "bomb",
+    # "color": "\u001b[47m",
+    "color": "\u001b[40;1m",
+    "character": "B",
     "dimensions": (0, 0),
     "velocity": (0, 0.5),
+    "position": (83, 6)
 }
 
 DELAY = 0
 TIMEOUT = 0.1
 UPDATE_BALL = 1
+MAX_LIVES = 4
 
 POWERUP_SPAN = 10
+POWERUP_SPAN = 5
 BRICK_SCORE = [10, 20, 40, 0, 800]
+BOMB_SPAN = 1
+BRICK_LIFE = [3, 1]
+BRICK_SHIFT = 20
+LASER_TIME = 15
+LASER_SPAN = 1
+LASER_COLOR = "\u001b[43;1m"
+GRAVITY = 0.1
+REFRESH_RATE = 10

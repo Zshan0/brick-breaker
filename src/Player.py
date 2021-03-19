@@ -25,10 +25,6 @@ class Player:
 
         self.lives = self.lives - 1
         self.game.set_lives(self.lives)
-        if self.lives == 0:
-            return False
-        else:
-            return True
 
     def time_update(self):
         time_diff = time.time() - self.init_time
@@ -38,12 +34,12 @@ class Player:
         self.init_time = time.time()
 
     def move_paddle(self, input):
-        if input == ' ':
+        if input == " ":
             self.paddle.release_ball()
             return
-        elif input == 'a':
+        elif input == "a":
             value = -1
-        elif input == 'd':
+        elif input == "d":
             value = 1
 
         self.paddle.move_paddle(self.game, value)
@@ -53,6 +49,7 @@ class Player:
         self.paddle.delete(self.game)
         self.paddle = Paddle(self.game, ball)
         self.balls = [ball]
+        self.powerups = []
 
     def game_over(self):
         self.game_pause()
@@ -65,17 +62,18 @@ class Player:
                 continue
             if ball.move_ball(self.game):
                 continue
-            ''' If move_ball() returns False it means the ball has to be
-                deleted'''
+            """ If move_ball() returns False it means the ball has to be
+                deleted"""
             ball.delete(self.game)
             self.balls.remove(ball)
 
         if len(self.balls) == 0:
-            ''' All the balls are gone'''
-            if self.reduce_life():
+            """ All the balls are gone"""
+            self.reduce_life()
+            if self.lives > 0:
                 self.game_reset()
             else:
-                ''' All the lives are gone'''
+                """ All the lives are gone"""
                 self.game_over()
 
     def move_powerups(self):
@@ -86,7 +84,7 @@ class Player:
         self.powerup_check()
 
     def ball_increase(self):
-        ''' Doubling the balls with opposite x velocity'''
+        """ Doubling the balls with opposite x velocity"""
 
         new_balls = []
 
@@ -102,12 +100,31 @@ class Player:
         for ball in self.balls:
             ball.velocity = [2 * a for a in ball.velocity]
 
+    def laser_shot(self):
+        self.laser_time = time.time()
+        laser = Ball(self.game, 2)
+        self.balls.append(laser)
+
+    def laser_mode(self, mode):
+        ''' Changing the color of paddle'''
+        if mode:
+            self.laser_time = time.time()
+            self.paddle.color = LASER_COLOR
+            self.paddle.displace(self.game, self.paddle.position)
+            self.laser_shot()
+        else:
+            self.paddle.color = PADDLE["color"]
+            self.paddle.displace(self.game, self.paddle.position)
+
     def powerup_gain(self, powerup):
-        is_there = list(filter(lambda power: power["powerup"].character ==
-                               powerup.character,
-                               self.powers))
+        is_there = list(
+            filter(
+                lambda power: power["powerup"].character == powerup.character,
+                self.powers,
+            )
+        )
         if len(is_there) > 0:
-            ''' Powerup already present'''
+            """ Powerup already present"""
             self.powers.remove(is_there[0])
             self.powers.append({"powerup": powerup, "time": time.time()})
             return
@@ -115,36 +132,49 @@ class Player:
         self.powers.append({"powerup": powerup, "time": time.time()})
 
         if powerup.character == "E":
-            ''' Expand the paddle'''
+            """ Expand the paddle"""
             self.paddle.expand_paddle(self)
         elif powerup.character == "S":
-            ''' Shrink the paddle'''
+            """ Shrink the paddle"""
             self.paddle.shrink_paddle(self)
         elif powerup.character == "B":
-            ''' Ball multiplier'''
+            """ Ball multiplier"""
             self.ball_increase()
+        elif powerup.character == "L":
+            """ Laser Shooting"""
+            self.laser_mode(True)
 
     def powerup_loss(self, powerup_dict):
         powerup = powerup_dict["powerup"]
 
         if powerup.character == "E":
-            ''' Expand the paddle'''
+            """ Expand the paddle"""
             self.paddle.shrink_paddle(self)
         elif powerup.character == "S":
-            ''' Shrink the paddle'''
+            """ Shrink the paddle"""
             self.paddle.expand_paddle(self)
+        elif powerup.character == "L":
+            self.laser_mode(False)
 
         self.powers.remove(powerup_dict)
 
     def powerup_check(self):
-        ''' Checks if the powerup span has runout'''
+        """ Checks if the powerup span has runout"""
         for power in self.powers:
             time_passed = time.time() - power["time"]
+            if power["powerup"].character == "L":
+                last_shot = time.time() - self.laser_time
+                if last_shot >= LASER_SPAN:
+                    self.laser_shot()
+
+                if time_passed >= LASER_TIME:
+                    self.powerup_loss(power)
+
             if time_passed >= POWERUP_SPAN:
                 self.powerup_loss(power)
 
     def game_start(self):
-        ''' Destroy the original Player object and create a new one'''
+        """ Destroy the original Player object and create a new one"""
         self.status = 1
 
     def game_pause(self):
@@ -170,5 +200,3 @@ class Player:
     def score_increase(self, strength):
         self.score += BRICK_SCORE[strength]
         self.game.top.set_score(self.game.screen, self.score)
-
-

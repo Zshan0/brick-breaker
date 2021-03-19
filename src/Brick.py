@@ -12,6 +12,7 @@ class Brick(Object):
         self.strength = strength
         self.game = game
         self.color = game.brick_colors[strength]
+        self.is_blinking = randint(0, 1) == 1
 
         no_powerups = len(POWERUP["text"])
         powerup_num = randint(0, no_powerups - 1)
@@ -20,7 +21,17 @@ class Brick(Object):
 
         self.powerup = PowerUp(powerup_num, powerup_pos)
 
-    def collision_reaction(self, breakable):
+    def blink(self):
+        if not self.is_blinking:
+            return
+
+        self.strength = ((self.strength + 1) %
+                        (len(self.game.brick_colors) - 2))
+
+        self.color = self.game.brick_colors[self.strength]
+        self.displace(self.game, self.position)
+
+    def collision_reaction(self, breakable, ball=None):
         if breakable == "OP":
             if self.strength == len(self.game.brick_colors) - 1:
                 self.strength = -1
@@ -36,9 +47,8 @@ class Brick(Object):
                             self.game.bricks.remove(brick)
 
             if self.powerup is not None:
-                self.powerup.release_powerup(self.game)
+                self.powerup.release_powerup(self.game, self, ball)
                 self.delete(self.game)
-
 
             return False
 
@@ -56,7 +66,7 @@ class Brick(Object):
             ''' The brick has been destroyed, if it has a powerup need to
                 release it.'''
             if self.powerup is not None:
-                self.powerup.release_powerup(self.game)
+                self.powerup.release_powerup(self.game, self, ball)
 
             self.delete(self.game)
             return False

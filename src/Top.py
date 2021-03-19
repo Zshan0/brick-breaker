@@ -28,6 +28,20 @@ class Top:
             screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
                 text_color + lives[x] + RESET
 
+    def set_boss_bar(self, screen, boss_lives=0):
+        ''' displaying the icon and the number of lives left
+            if lives == -1 then the TOP is not in progress.'''
+
+        pos = TOP["bar_pos"]
+        origin = TOP["origin"]
+        text_color = TOP["text_color"]
+        lives = "boss:"
+        lives += ('+' * boss_lives) + ('-' * (MAX_LIVES - boss_lives))
+
+        for x in range(len(lives)):
+            screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
+                text_color + lives[x] + RESET
+
     def set_time(self, screen, player_time=-1):
         ''' displaying the icon and the amount of time that has passed.
             if time == -1 then the TOP is not in progress.'''
@@ -59,6 +73,17 @@ class Top:
             screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
                 text_color + time[x] + RESET
 
+    def set_level(self, screen, level=1):
+        origin = TOP["origin"]
+        icon = TOP["level_icon"]
+        pos = TOP["level_pos"]
+        text_color = TOP["text_color"]
+        level = icon + ' ' + str(int(level))
+
+        for x in range(len(level)):
+            screen.screen_string[origin[1] + pos[1]][origin[0] + pos[0] + x] =\
+                text_color + level[x] + RESET
+
     def display_game_over(self, screen):
         origin = TOP["origin"]
         pos = TOP["game_over_pos"]
@@ -81,3 +106,4 @@ class Top:
         self.set_lives(screen)
         self.set_time(screen)
         self.set_score(screen)
+        self.set_level(screen)

@@ -51,7 +51,11 @@ class Object():
             to be in.'''
 
         ''' Collision for the ball'''
-        if other_object.name == "ball" or other_object.name == "powerup":
+        if other_object.name == "ball" or\
+           other_object.name == "powerup" or\
+           other_object.name == "bomb" or\
+           other_object.name == "laser":
+
             if int(new_position[1]) >= int(self.position[1]) and\
                     int(new_position[1]) <=\
                     int(self.position[1] + self.dimensions[1]):
